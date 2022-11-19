@@ -38,13 +38,31 @@ You may also see any lint errors in the console.
 
 ## 🔗 Links
 
-> ## Checkout the website link 
+> ## Checkout the website link https://e-com-api-ajay.herokuapp.com/
 
 
 <br/>
 <br/>
 
-## 💻 Screens
+## 💻 
+
+###  Create Product
+
+![Screenshot (71)](https://user-images.githubusercontent.com/102378038/202855411-2c136c88-1ad9-44e5-9c84-cbe20dbc858a.png)
+
+
+### List Product
+![Screenshot (70)](https://user-images.githubusercontent.com/102378038/202855361-25ea669c-fe60-43e7-8f48-605eca5a8930.png)
+
+
+
+### Update Product
+
+![Screenshot (68)](https://user-images.githubusercontent.com/102378038/202855285-39cad2e2-6978-4c0a-9990-53d286406717.png)
+
+### Delete Product
+
+![Screenshot (69)](https://user-images.githubusercontent.com/102378038/202855317-387172fe-1c9e-492d-9268-53d2e94f9be3.png)
 
 
 
