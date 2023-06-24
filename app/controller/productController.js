@@ -14,47 +14,42 @@ function productController() {
         // ****************************  Product Create ******************************//
 
         async create(req, resp) {
-
-            const { name, price, quantity } = req.body;
-            let document;
             try {
-                document = await Product.create({
+                  const { name, price, quantity } = req.body;
+               const createProduct = await Product.create({
                     name,
                     price,
                     quantity,
 
                 });
-                resp.status(201).json({ 'data': { product: document } });
-                document.save();
+                resp.status(201).json({ 'data': { product: createProduct } });
+                createProduct.save();
             } catch (err) {
-                resp.status(500).json(err);
+                 resp.status(500).json({ error: 'Failed to save product' });
             }
-
-
-
         },
 
         // ********************************  Find List All Product *******************************//
         async index(req, resp) {
-            let documents;
+          
             try {
-                documents = await Product.find()
+             const productList = await Product.find()
                     .select('-updatedAt -createdAt -__v')
                     .sort({ _id: -1 });
-                resp.json({ 'data': { "product": documents } });
+                resp.json({ 'data': { "product": productList } });
             } catch (err) {
-                resp.status(500).json(err);
+                resp.status(500).json({ error: 'Failed to fetch product' });
             }
 
         },
 
         //******************************** Product Update by Id  **************************** */
         async update(req, resp) {
-            const { name, price, quantity } = req.body;
-            let document;
             try {
-                document = await Product.findOneAndUpdate(
-                    { _id: req.params.id },
+                  const eComId = req.params.id;
+                 const { name, price, quantity } = req.body;
+            const updateProduct = await Product.findOneAndUpdate(
+                    { _id:eComId },
                     {
                         name,
                         price,
@@ -63,22 +58,30 @@ function productController() {
                     { new: true }
                 ) .select('-updatedAt -createdAt -__v')
                 .sort({ _id: -1 });
-
-                console.log(document);
-                resp.status(200).json({ 'data':{ product: document , message: "Update sucessfully" } });
-              
-            } catch (err) {
-                resp.status(500).json(err);
+                  if (!updateProduct) {
+                    return resp.status(404).json({ error: 'Product not found' });
+                }
+                console.log(updateProduct);
+                   resp.status(200).json({ 'data':{ product: updateProduct , message: "Product Update sucessfully" } });
+            } 
+            catch (err) {
+               resp.status(500).json({ error: 'Failed to update product' });
             }
 
         },
         // ********************************  Delete products by Id  ******************************//
-        async delete(req, resp,) {
-            const documentProduct = await Product.findOneAndRemove({ _id: req.params.id });
-            if (!documentProduct) {
-                resp.status(500).json(err);
-            } resp.status(200).json({ 'data': { message: "product deleted" } });
-
+        async delete(req, resp) {
+            try{
+                 const eComId = req.params.id;
+                const deleteProduct = await Product.findOneAndRemove(eComId);
+                  if (!deleteProduct) {
+                    return resp.status(404).json({ error: 'Product not found' });
+                }
+                resp.status(200).json({ 'data': { message: "product deleted successfully" } });
+            }
+            catch{
+                  resp.status(500).json({ error: 'Failed to delete product' });
+            }
         },
 
 
@@ -88,14 +91,16 @@ function productController() {
 
         //**********************************  Find One Product  ******************************** */
         async find(req, resp) {
-            let productFind;
             try {
-                productFind = await Product.findOne({ _id: req.params.id }).select(
-                    '-updatedAt -__v'
-                );
-                resp.json(productFind);
+                 const eComId = req.params.id;
+                  const findOneProduct = await Product.findOne({ id: eComId }).select('-updatedAt -createdAt -_v');
+                if (!findOneProduct) {
+                    return resp.status(404).json({ error: 'Product not found' });
+                }
+                resp.json(findOneProduct);
+               
             } catch (err) {
-                resp.status(500).json(err);
+                 resp.status(500).json({ error: 'Failed to fetch product' });
             }
 
         }
