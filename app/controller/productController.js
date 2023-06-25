@@ -73,7 +73,7 @@ function productController() {
         async delete(req, resp) {
             try{
                  const eComId = req.params.id;
-                const deleteProduct = await Product.findOneAndRemove(eComId);
+                const deleteProduct = await Product.findOneAndRemove({_id:eComId});
                   if (!deleteProduct) {
                     return resp.status(404).json({ error: 'Product not found' });
                 }
@@ -93,7 +93,7 @@ function productController() {
         async find(req, resp) {
             try {
                  const eComId = req.params.id;
-                  const findOneProduct = await Product.findOne({ id: eComId }).select('-updatedAt -createdAt -_v');
+                  const findOneProduct = await Product.findOne({ _id: eComId }).select('-updatedAt -createdAt -_v');
                 if (!findOneProduct) {
                     return resp.status(404).json({ error: 'Product not found' });
                 }
